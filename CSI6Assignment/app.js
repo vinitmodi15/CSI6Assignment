@@ -1,26 +1,19 @@
+// app.js (main application file)
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const studentRouter = require('./routes/student');
-const dbUrl='mongodb://localhost:27017/node'
-main()
-  .then(() => {
-    console.log("connected to the DB");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+const productController = require('./products.controller');
 
-async function main() {
-  await mongoose.connect(dbUrl);
-}
+mongoose.connect('mongodb://localhost/products', { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.use(bodyParser.json());
-app.use('/students', studentRouter); 
+app.use(express.json());
 
+app.post('/products', productController.createProduct);
+app.get('/products', productController.getProducts);
+app.get('/products/:id', productController.getProduct);
+app.put('/products/:id', productController.updateProduct);
+app.delete('/products/:id', productController.deleteProduct);
 
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
 });
