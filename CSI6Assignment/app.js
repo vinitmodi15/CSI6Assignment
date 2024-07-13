@@ -19,7 +19,7 @@ async function main() {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/products', productsRouter);
+app.use('/', productsRouter);
 
 const port = 3000;
 app.listen(port, () => {
